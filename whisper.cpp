@@ -15,6 +15,8 @@
 #include <thread>
 #include <vector>
 
+#define DIV_FACTOR 1
+
 #define USE_FLASH_ATTN
 //#define USE_FLASH_FF
 
@@ -1053,7 +1055,7 @@ static bool whisper_model_load(const std::string & fname, whisper_context & wctx
             return false;
         }
     }
-    model.e_pe->ne[1] /= 4;
+    model.e_pe->ne[1] /= DIV_FACTOR;
 
     fin.close();
 
@@ -1077,7 +1079,7 @@ static bool whisper_encode(
     const auto & mel_inp = wctx.mel;
     const auto & hparams = model.hparams;
 
-    const int n_ctx   = hparams.n_audio_ctx/4;
+    const int n_ctx   = hparams.n_audio_ctx/DIV_FACTOR;
     const int n_state = hparams.n_audio_state;
     const int n_head  = hparams.n_audio_head;
     const int n_layer = hparams.n_audio_layer;
@@ -1475,7 +1477,7 @@ static bool whisper_decode(
     const int n_layer = hparams.n_text_layer;
 
     const int N = n_tokens;
-    const int M = hparams.n_audio_ctx/4;
+    const int M = hparams.n_audio_ctx/DIV_FACTOR;
 
     struct ggml_init_params params = {
             .mem_size   = wctx.buf_compute.size(),
