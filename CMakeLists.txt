@@ -177,6 +177,7 @@ set(TARGET whisper)
 add_library(${TARGET}
     ggml.c
     whisper.cpp
+    thread.cpp
     )
 
 target_include_directories(${TARGET} PUBLIC
